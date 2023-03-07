@@ -9,6 +9,7 @@
         BorderBrush="#718599"
         SizeToContent="Width"
         ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
         Title="FoobarNowPlaying" Height="110" Width="800">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>

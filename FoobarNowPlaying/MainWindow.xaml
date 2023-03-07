@@ -5,29 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FoobarNowPlaying"
         mc:Ignorable="d"
-        Background="#718599"
-        BorderBrush="#718599"
-        SizeToContent="Width"
-        ResizeMode="NoResize"
-        Title="FoobarNowPlaying" Height="110" Width="800">
-    <Grid Margin="10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+        Title="FoobarNowPlaying" Height="100" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <Image Grid.Row="0" Source="{Binding MusicalNoteIcon}" RenderOptions.BitmapScalingMode="HighQuality" />
-
-        <Grid Margin="10,0,0,0" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Justify" Text="{Binding SongName}"/>
-            <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Justify" Text="{Binding Artist}" />
-            <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Justify" Text="{Binding Album}" />
-        </Grid>
+        <TextBlock Grid.Row="0" Text="{Binding SongName}" />
+        <TextBlock Grid.Row="1" Text="{Binding Artist}" />
+        <TextBlock Grid.Row="2" Text="{Binding Album}" />
     </Grid>
 </Window>

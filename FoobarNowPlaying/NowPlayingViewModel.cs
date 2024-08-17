@@ -1,12 +1,15 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 
 namespace FoobarNowPlaying
 {
     public class NowPlayingViewModel : INotifyPropertyChanged
     {
+        private readonly string foobarFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "foobar2000/foobar2000.exe");
         private string songTitle;
-        private string songAlum;
+        private string songAlbum;
         private string songArtist;
 
         public string SongTitle
@@ -21,10 +24,10 @@ namespace FoobarNowPlaying
 
         public string SongAlbum
         {
-            get { return songAlum; }
+            get { return songAlbum; }
             set 
             { 
-                songAlum = value;
+                songAlbum = value;
                 OnPropertyChanged(nameof(SongAlbum));
             }
         }
@@ -42,7 +45,27 @@ namespace FoobarNowPlaying
 
         public NowPlayingViewModel()
         {
-            
+            _ = Task.Run(() =>
+            {
+                using Process foobarProcess = new();
+                ProcessStartInfo startInfo = new()
+                {
+                    FileName = foobarFilePath
+                };
+                foobarProcess.EnableRaisingEvents = true;
+                foobarProcess.Exited += OnFoobarClose;
+                foobarProcess.Start();
+                foobarProcess.WaitForInputIdle();
+                while (!foobarProcess.HasExited)
+                {
+                    
+                }
+            });
+        }
+
+        private void OnFoobarClose(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
         }
 
         #region INPC

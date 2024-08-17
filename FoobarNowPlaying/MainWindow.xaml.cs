@@ -16,9 +16,13 @@ namespace FoobarNowPlaying
     /// </summary>
     public partial class MainWindow : Window
     {
+        private NowPlayingViewModel viewModel;
+
         public MainWindow()
         {
             InitializeComponent();
+            viewModel = new NowPlayingViewModel();
+            DataContext = viewModel;
         }
     }
 }

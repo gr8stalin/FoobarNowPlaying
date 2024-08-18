@@ -73,6 +73,7 @@ namespace FoobarNowPlaying
 
         private void FormatTrackData(Process process)
         {
+            Thread.Sleep(250);
             process.Refresh();
             var foobarWindowTitle = process.MainWindowTitle;
             if (TitleIsAppName(foobarWindowTitle) || string.IsNullOrEmpty(foobarWindowTitle))
@@ -83,7 +84,7 @@ namespace FoobarNowPlaying
                 return;
             }
 
-            var titleSegments = foobarWindowTitle.Split("\\s|\\s").Select(FormatSegment).ToArray();
+            var titleSegments = foobarWindowTitle.Split(" | ").Select(x => FormatSegment(x)).ToArray();
             SongTitle = titleSegments[0];
             SongArtist = titleSegments[1];
             SongAlbum = titleSegments[2];
@@ -118,7 +119,7 @@ namespace FoobarNowPlaying
 
         #region INPC
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         #endregion
     }
 }

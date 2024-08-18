@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace FoobarNowPlaying
 {
@@ -53,15 +54,48 @@ namespace FoobarNowPlaying
                 {
                     FileName = foobarFilePath
                 };
+
+                foobarProcess.StartInfo = startInfo;
                 foobarProcess.EnableRaisingEvents = true;
                 foobarProcess.Exited += OnFoobarClose;
                 foobarProcess.Start();
                 foobarProcess.WaitForInputIdle();
+                
                 while (!foobarProcess.HasExited)
                 {
-                    
+                    FormatTrackData(foobarProcess);
                 }
             });
+        }
+
+        private void FormatTrackData(Process process)
+        {
+            process.Refresh();
+            var foobarWindowTitle = process.MainWindowTitle;
+            if (TitleIsAppName(foobarWindowTitle) || string.IsNullOrEmpty(foobarWindowTitle))
+            {
+                SongTitle = string.Empty;
+                SongArtist = string.Empty;
+                SongAlbum = string.Empty;
+                return;
+            }
+
+            var titleSegments = foobarWindowTitle.Split("\\s|\\s").Select(FormatSegment).ToArray();
+            SongTitle = titleSegments[0];
+            SongArtist = titleSegments[1];
+            SongAlbum = titleSegments[2];
+
+            string FormatSegment(string segment)
+            {
+                if (segment.Contains("foobar2000"))
+                {
+                    return Regex.Replace(segment, "\\[foobar2000\\]", "").Trim();
+                }
+
+                return segment.Trim();
+            }
+
+            bool TitleIsAppName(string title) => Regex.Match(title, "foobar2000 v\\d\\.*").Success;
         }
 
         private void OnFoobarClose(object sender, EventArgs e)

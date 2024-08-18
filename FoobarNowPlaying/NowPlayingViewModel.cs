@@ -45,6 +45,7 @@ namespace FoobarNowPlaying
 
         public NowPlayingViewModel()
         {
+            CloseFoobarIfAlreadyOpen();
             _ = Task.Run(() =>
             {
                 using Process foobarProcess = new();
@@ -66,6 +67,16 @@ namespace FoobarNowPlaying
         private void OnFoobarClose(object sender, EventArgs e)
         {
             Environment.Exit(0);
+        }
+
+        private void CloseFoobarIfAlreadyOpen()
+        {
+            var foobarProcess = Process.GetProcesses().Where(x => x.ProcessName.Contains("foobar2000", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            if (foobarProcess != null)
+            {
+                foobarProcess.CloseMainWindow();
+                foobarProcess.Close();
+            }
         }
 
         #region INPC

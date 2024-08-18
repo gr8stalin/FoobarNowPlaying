@@ -9,6 +9,7 @@ namespace FoobarNowPlaying
     public class NowPlayingViewModel : INotifyPropertyChanged
     {
         private readonly string foobarFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "foobar2000/foobar2000.exe");
+        private readonly string musicalNoteIconFilepath = "pack://application:,,,/Images/note.png";
         private string songTitle;
         private string songAlbum;
         private string songArtist;
@@ -43,9 +44,11 @@ namespace FoobarNowPlaying
             }
         }
 
+        public Uri MusicalNoteIcon { get; set; }
 
         public NowPlayingViewModel()
         {
+            MusicalNoteIcon = new Uri(musicalNoteIconFilepath);
             CloseFoobarIfAlreadyOpen();
             _ = Task.Run(() =>
             {
